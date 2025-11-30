@@ -1,6 +1,8 @@
 node_modules/
 dist/
 .env
+.env.*
+!.env.example
 .DS_Store
 *.log
 coverage/
@@ -9,3 +11,11 @@ tsconfig.app.tsbuildinfo
 tsconfig.node.tsbuildinfo
 
 venv/
+
+# Foundry / Solidity build artifacts
+contract/out/
+contract/cache/
+contract/broadcast/
+
+# Server logs and runtime files
+server/logs/
