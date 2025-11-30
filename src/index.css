@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[data-rk] {
+  --rk-blurs-modalOverlay: blur(0px);
+  --rk-fonts-body: SFRounded, ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --rk-radii-actionButton: 9999px;
+  --rk-radii-connectButton: 12px;
+  --rk-radii-menuButton: 12px;
+  --rk-radii-modal: 24px;
+  --rk-radii-modalMobile: 28px;
+  --rk-colors-accentColor: #3898FF;
+  --rk-colors-accentColorForeground: #FFF;
+  --rk-colors-actionButtonBorder: rgba(255, 255, 255, 0.04);
+  --rk-colors-actionButtonBorderMobile: rgba(255, 255, 255, 0.08);
+  --rk-colors-actionButtonSecondaryBackground: rgba(255, 255, 255, 0.08);
+  --rk-colors-closeButton: rgba(224, 232, 255, 0.6);
+  --rk-colors-closeButtonBackground: rgba(255, 255, 255, 0.08);
+  --rk-colors-connectButtonBackground: #1A1B1F;
+  --rk-colors-connectButtonBackgroundError: #FF494A;
+  --rk-colors-connectButtonInnerBackground: linear-gradient(0deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.15));
+  --rk-colors-connectButtonText: #FFF;
+  --rk-colors-connectButtonTextError: #FFF;
+  --rk-colors-connectionIndicator: #30E000;
+  --rk-colors-downloadBottomCardBackground: linear-gradient(126deg, rgba(0, 0, 0, 0) 9.49%, rgba(120, 120, 120, 0.2) 71.04%), #1A1B1F;
+  --rk-colors-downloadTopCardBackground: linear-gradient(126deg, rgba(120, 120, 120, 0.2) 9.49%, rgba(0, 0, 0, 0) 71.04%), #1A1B1F;
+  --rk-colors-error: #FF494A;
+  --rk-colors-generalBorder: rgba(255, 255, 255, 0.08);
+  --rk-colors-generalBorderDim: rgba(255, 255, 255, 0.04);
+  --rk-colors-menuItemBackground: rgba(224, 232, 255, 0.1);
+  --rk-colors-modalBackdrop: rgba(0, 0, 0, 0.5);
+  --rk-colors-modalBackground: #1A1B1F;
+  --rk-colors-modalBorder: rgba(255, 255, 255, 0.08);
+  --rk-colors-modalText: #FFF;
+  --rk-colors-modalTextDim: rgba(224, 232, 255, 0.3);
+  --rk-colors-modalTextSecondary: rgba(255, 255, 255, 0.6);
+  --rk-colors-profileAction: rgba(224, 232, 255, 0.1);
+  --rk-colors-profileActionHover: rgba(224, 232, 255, 0.2);
+  --rk-colors-profileForeground: rgba(224, 232, 255, 0.05);
+  --rk-colors-selectedOptionBorder: rgba(224, 232, 255, 0.1);
+  --rk-colors-standby: #FFD641;
+  --rk-shadows-connectButton: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  --rk-shadows-dialog: 0px 8px 32px rgba(0, 0, 0, 0.32);
+  --rk-shadows-profileDetailsAction: 0px 2px 6px rgba(37, 41, 46, 0.04);
+  --rk-shadows-selectedOption: 0px 2px 6px rgba(0, 0, 0, 0.24);
+  --rk-shadows-selectedWallet: 0px 2px 6px rgba(0, 0, 0, 0.24);
+  --rk-shadows-walletLogo: 0px 2px 16px rgba(0, 0, 0, 0.16);
+}
+
+:root {
+  --toastify-color-dark: #121212;
+  --toastify-color-info: #3f3f46;
+  --toastify-color-success: rgb(74 222 128);
+  --toastify-color-error: #e74c3c;
+
+  --toastify-icon-color-info: var(--toastify-color-info);
+  --toastify-icon-color-success: rgb(74 222 128);
+  --toastify-icon-color-error: var(--toastify-color-error);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--rk-fonts-body);
+  background-color: var(--rk-colors-modalBackground, #1A1B1F);
+  color: var(--rk-colors-modalText, #FFF);
+  margin: 0;
+}
+
+/* Button */
+.btn {
+  @apply rounded-md px-1.5 py-1.5 font-mono text-sm font-medium transition-all duration-200;
+}
+
+.btn-primary {
+  @apply border border-green-400/10 bg-green-900/50 text-green-400 hover:border-green-400/20 hover:bg-green-900/60;
+}
+
+.btn-primary:disabled {
+  @apply cursor-not-allowed border border-zinc-400/25 bg-zinc-950 text-zinc-400;
+}
+
+.btn-inactive {
+  @apply border border-zinc-400/25 bg-zinc-950 text-zinc-400 hover:border-zinc-400/40 hover:bg-zinc-900;
+}
+
+.btn-secondary {
+  @apply border border-indigo-400/10 bg-indigo-950 text-indigo-400 hover:border-indigo-400/25;
+}
+
+/* Grain */
+
+/* zinc-800 #27272a */
+/* zinc-700 #3f3f46 */
+/* zinc-600 #52525b */
+
+.grain {
+  @apply bg-zinc-900;
+  /* Graph Paper */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%233f3f46' fill-opacity='0.4'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Gradient border */
+.gradient-border {
+  position: relative;
+  background-clip: padding-box;
+  border: solid 1px transparent;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  margin: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    theme("colors.zinc.600 / 0.8"),
+    theme("colors.zinc.800 / 0.9")
+  );
+}
+
+input {
+  outline: none !important;
+}
