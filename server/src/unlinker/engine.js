@@ -39,7 +39,7 @@ export async function enqueueWithdrawal(session) {
     expected + (expected * BigInt(jitterPpm)) / 1_000_000n;
 
   const executeAfter =
-    Date.now() + randomInt(1, 60) * 1000; // 1–60 seconds in the future
+    Date.now() + randomInt(1, 10) * 1000; // 1–60 seconds in the future
 
   const jobId = uuidv4();
 
@@ -49,6 +49,7 @@ export async function enqueueWithdrawal(session) {
     sessionToken: session.sessionToken,
     newAddress: session.newAddress,
     normalizedAmount,
+    depositId: session.depositId || null,
     executeAfter,
     status: 'pending'
   };
@@ -65,6 +66,7 @@ export async function enqueueWithdrawal(session) {
     sessionToken: session.sessionToken,
     newAddress: session.newAddress,
     normalizedAmount: normalizedAmount.toString(),
+    depositId: job.depositId,
     executeAfter
   });
 }

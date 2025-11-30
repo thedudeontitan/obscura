@@ -2,14 +2,15 @@ import { ethers } from 'ethers';
 import { logger } from '../utils/logger.js';
 
 /**
- * Mock escrow contract ABI used for both listening and sending.
- * In a real deployment this would be the actual on-chain contract ABI.
+ * Escrow contract ABI used for both listening and sending.
+ *
+ * NOTE: This must match the deployed EscrowPool.sol contract.
  *
  * @type {string[]}
  */
 export const ESCROW_ABI = [
   'event Deposited(address indexed from,uint256 amount,uint256 depositId)',
-  'function withdraw(address to,uint256 amount) external returns (bool)'
+  'function operatorWithdraw(address to,uint256 amount,uint256 depositId,bytes32 jobId) external'
 ];
 
 /**
@@ -17,9 +18,11 @@ export const ESCROW_ABI = [
  *
  * @param {string} newAddress - Destination address.
  * @param {bigint} amount - Amount to withdraw in wei.
+ * @param {string|null} depositIdString - Escrow depositId associated with this withdrawal (stringified uint256).
+ * @param {string} jobId - Local job ID, used to derive a unique on-chain jobId bytes32.
  * @returns {Promise<string>} Transaction hash.
  */
-export async function sendFundsToNewAddress(newAddress, amount) {
+export async function sendFundsToNewAddress(newAddress, amount, depositIdString, jobId) {
   const rpcUrl = process.env.CHAIN_RPC;
   const contractAddress = process.env.ESCROW_CONTRACT_ADDRESS;
   const operatorKey = process.env.OPERATOR_PRIVATE_KEY;
@@ -46,12 +49,32 @@ export async function sendFundsToNewAddress(newAddress, amount) {
   const wallet = new ethers.Wallet(operatorKey, provider);
   const contract = new ethers.Contract(contractAddress, ESCROW_ABI, wallet);
 
+  // Fallback depositId to zero if missing (for older sessions). The contract
+  // does not enforce any specific semantics on depositId beyond logging.
+  let depositId = 0n;
+  if (depositIdString != null) {
+    try {
+      depositId = BigInt(depositIdString);
+    } catch (e) {
+      logger.warn('Failed to parse depositId string; defaulting to 0', {
+        depositIdString,
+        error: /** @type {Error} */ (e).message
+      });
+    }
+  }
+
+  // Derive a deterministic bytes32 jobId from the local UUID.
+  const jobIdBytes32 = ethers.id(jobId);
+
   logger.info('Sending funds to new address', {
     to: newAddress,
-    amount: amount.toString()
+    amount: amount.toString(),
+    depositId: depositId.toString(),
+    jobId,
+    jobIdBytes32
   });
 
-  const tx = await contract.withdraw(newAddress, amount);
+  const tx = await contract.operatorWithdraw(newAddress, amount, depositId, jobIdBytes32);
   logger.info('Submitted withdrawal transaction', { hash: tx.hash });
 
   const receipt = await tx.wait();

@@ -22,6 +22,7 @@
  * @property {string|null} encryptedKeyForUser - Encrypted private key blob.
  * @property {string|null} attestationReport - TEE attestation report (dummy string).
  * @property {string|null} depositTxHash - Detected deposit transaction hash.
+ * @property {string|null} depositId - Escrow contract depositId associated with this session (stringified uint256).
  * @property {string|null} withdrawTxHash - Withdrawal transaction hash.
  * @property {string} createdAt - ISO timestamp.
  * @property {string} updatedAt - ISO timestamp.
@@ -33,6 +34,7 @@
  * @property {string} sessionToken - Related session token.
  * @property {string} newAddress - Withdrawal destination address.
  * @property {bigint} normalizedAmount - Amount to withdraw (wei as bigint).
+ * @property {string|null} depositId - Escrow depositId linked to this withdrawal (stringified uint256).
  * @property {number} executeAfter - Unix timestamp (ms) when this job becomes eligible.
  * @property {'pending'|'completed'|'failed'} status - Job status.
  */

@@ -43,7 +43,41 @@ requestWalletRouter.post('/request-wallet', async (req, res, next) => {
     const sessionToken = uuidv4();
     const now = new Date().toISOString();
 
-    const { encryptedKeyForUser, attestationReport, newAddress } = generatePrivateKeyInsideTEE();
+    const userAddressLc = userAddress.toLowerCase();
+
+    // Reuse an existing unlinker wallet for this user if one already exists.
+    const existingSessions = Object.values(memdb.sessions);
+    const reusableSession = existingSessions.find(
+      s =>
+        s.userAddress === userAddressLc &&
+        s.newAddress &&
+        s.encryptedKeyForUser &&
+        s.attestationReport
+    );
+
+    let newAddress;
+    let encryptedKeyForUser;
+    let attestationReport;
+
+    if (reusableSession) {
+      // Reuse wallet details from the most recent matching session.
+      newAddress = reusableSession.newAddress;
+      encryptedKeyForUser = reusableSession.encryptedKeyForUser;
+      attestationReport = reusableSession.attestationReport;
+
+      logger.info('Reusing existing unlinker wallet for user', {
+        userAddress: userAddressLc,
+        newAddress
+      });
+    } else {
+      ({ encryptedKeyForUser, attestationReport, newAddress } =
+        generatePrivateKeyInsideTEE());
+
+      logger.info('Generated new unlinker wallet for user', {
+        userAddress: userAddressLc,
+        newAddress
+      });
+    }
 
     const sessionId = uuidv4();
 
@@ -51,7 +85,7 @@ requestWalletRouter.post('/request-wallet', async (req, res, next) => {
     const session = {
       id: sessionId,
       sessionToken,
-      userAddress: userAddress.toLowerCase(),
+      userAddress: userAddressLc,
       expectedAmount: String(depositAmount),
       status: 'awaiting_deposit',
       newAddress,

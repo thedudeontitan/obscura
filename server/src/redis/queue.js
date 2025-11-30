@@ -131,7 +131,9 @@ export async function batchProcessor() {
         try {
           const txHash = await sendFundsToNewAddress(
             job.newAddress,
-            job.normalizedAmount
+            job.normalizedAmount,
+            job.depositId,
+            job.id
           );
 
           job.status = 'completed';

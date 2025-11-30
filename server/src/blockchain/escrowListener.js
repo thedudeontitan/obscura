@@ -81,16 +81,21 @@ export async function watchDeposits() {
 
           session.status = 'deposit_detected';
           session.depositTxHash = event.log.transactionHash;
+          session.depositId = depositId.toString();
           session.updatedAt = new Date().toISOString();
 
           logger.info('Matched deposit to session', {
             sessionToken: session.sessionToken,
             expectedAmount: session.expectedAmount,
-            depositAmount: amount.toString()
+            depositAmount: amount.toString(),
+            depositId: session.depositId
           });
 
           // Trigger unlinking pipeline (uses expectedAmount internally).
           await enqueueWithdrawal(session);
+
+          // Only match a single session per deposit event to avoid double-spending
+          break;
         }
       } catch (err) {
         logger.error('Error handling Deposited event', {
