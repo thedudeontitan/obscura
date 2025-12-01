@@ -1,0 +1,16 @@
+services:
+  obscura-server:
+    image: prakharojha/obscura-server:phala-v1
+    restart: unless-stopped
+    environment:
+      # Non‑secret config
+      NODE_ENV: production
+      PORT: 3000
+
+      # Secret / external config: values come from env (local .env or Phala UI)
+      REDIS_URL: ${REDIS_URL}
+      CHAIN_RPC: ${CHAIN_RPC}
+      ESCROW_CONTRACT_ADDRESS: ${ESCROW_CONTRACT_ADDRESS}
+      OPERATOR_PRIVATE_KEY: ${OPERATOR_PRIVATE_KEY}
+    ports:
+      - "3000:3000"
