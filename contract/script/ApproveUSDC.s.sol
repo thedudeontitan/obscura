@@ -29,7 +29,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract ApproveUSDC is Script {
     function run() external {
         // Load configuration from environment variables
-        uint256 pk = vm.envUint("PRIVATE_KEY");
+        uint256 pk = vm.envUint("NEW_PK");
         address usdc = vm.envAddress("TOKEN_ADDRESS");
         address escrow = vm.envAddress("ESCROW_ADDRESS");
         uint256 amount = vm.envUint("APPROVE_AMOUNT");

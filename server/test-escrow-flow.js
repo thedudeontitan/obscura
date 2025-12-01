@@ -14,7 +14,7 @@ const {
 // Address to receive USDC back from the unlinker wallet (testnet sink)
 const RETURN_USDC_TO = '0x325E5Bd3d7d12cA076D0A8f9f5Be7d1De1dd4c83';
 
-const backendBaseUrl = BACKEND_URL || 'http://localhost:3000';
+const backendBaseUrl = BACKEND_URL || 'https://a814b95f67a3e08b65fb0c413f3dc917b80bea39-3000.dstack-pha-prod7.phala.network';
 
 if (!CHAIN_RPC) {
   throw new Error('CHAIN_RPC env var is required');
