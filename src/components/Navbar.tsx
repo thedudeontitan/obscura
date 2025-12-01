@@ -2,6 +2,8 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePrivy } from '@privy-io/react-auth';
+import { useAccount } from 'wagmi';
 
 const navContainer = {
   hidden: { y: -100, opacity: 0 },
@@ -30,6 +32,8 @@ const navItem = {
 
 export default function Navbar() {
   const location = useLocation();
+  const { login, logout, authenticated, user } = usePrivy();
+  const { address, isConnected } = useAccount();
 
   return (
     <motion.div
@@ -125,24 +129,72 @@ export default function Navbar() {
           </Link>
         </motion.div>
 
-        {/* Right side - Simplified */}
+        {/* Right side - Wallet Connection */}
         <motion.div className="flex items-center space-x-4" variants={navItem}>
-          <motion.button
-            className="px-6 py-2 font-semibold transition-colors hover:opacity-90"
-            style={{
-              backgroundColor: '#5e81ac',
-              color: '#eceff4',
-              borderRadius: '8px',
-              border: 'none'
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
-          >
-            Connect Wallet
-          </motion.button>
+          {authenticated && isConnected ? (
+            <Menu as="div" className="relative">
+              <MenuButton className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors">
+                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-medium">
+                    {user?.email?.address?.charAt(0).toUpperCase() ||
+                     address?.slice(2, 4).toUpperCase() || 'U'}
+                  </span>
+                </div>
+                <div className="text-left">
+                  <p className="text-white text-sm font-medium">
+                    {user?.email?.address || 'Connected'}
+                  </p>
+                  <p className="text-gray-400 text-xs">
+                    {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ''}
+                  </p>
+                </div>
+              </MenuButton>
+              <MenuItems className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
+                <MenuItem>
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded-t-lg"
+                  >
+                    Profile
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <button
+                    onClick={() => navigator.clipboard.writeText(address || '')}
+                    className="w-full text-left px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700"
+                  >
+                    Copy Address
+                  </button>
+                </MenuItem>
+                <MenuItem>
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 text-red-400 hover:text-red-300 hover:bg-gray-700 rounded-b-lg"
+                  >
+                    Disconnect
+                  </button>
+                </MenuItem>
+              </MenuItems>
+            </Menu>
+          ) : (
+            <motion.button
+              onClick={login}
+              className="px-6 py-2 font-semibold transition-colors hover:opacity-90"
+              style={{
+                backgroundColor: '#5e81ac',
+                color: '#eceff4',
+                borderRadius: '8px',
+                border: 'none'
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+            >
+              Connect Wallet
+            </motion.button>
+          )}
         </motion.div>
       </div>
     </motion.div>
